@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using Application.Queries.Posts;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Persistence;
 
 namespace API
 {
@@ -28,10 +26,20 @@ namespace API
         {
 
             services.AddControllers();
+            services.AddDbContext<PostsDbContext>(opt =>
+                  opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //opt.UseSqlServer(Configuration.GetConnectionString("SqlServerDemo")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+
+            //MediatR configuration
+            services.AddMediatR(typeof(GetAllPosts.Handler).Assembly);
+            services.AddMediatR(typeof(GetPostsByAudience.Handler).Assembly);
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
