@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Commands.Posts;
 using Application.Queries.Posts;
+using Application.Requests;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace API.Controllers
 {
@@ -19,11 +19,30 @@ namespace API.Controllers
             return await Mediator.Send(new GetAllPosts.Query { });
         }
 
-        [HttpGet("GetPostsByAudience/{audience}")]
-
-        public async Task<IEnumerable<Post>> GetPostsByAudience(int audience)
+        [HttpGet("GetPostsForUser")]
+        public async Task<IEnumerable<Post>> GetPostsForUser([FromBody] PostsReadByUserRequest filters)
         {
-            return await Mediator.Send(new GetPostsByAudience.Query { audienceId = audience });
+            return await Mediator.Send(new GetPostsForUser.Query { Filters = filters });
+        }
+
+        [HttpGet("GetPostsByAudience/{audienceId}")]
+
+        public async Task<IEnumerable<Post>> GetPostsByAudience(int audienceId)
+        {
+            return await Mediator.Send(new GetPostsByAudience.Query { audienceId = audienceId });
+        }
+
+        [HttpPost("CreatePost")]
+        public async Task<IActionResult> CreatePost([FromBody] PostCreateRequest post)
+        {
+            return Ok(await Mediator.Send(new CreatePost.Command { post = post }));
+        }
+
+        [HttpDelete("DeletePost/{postId}")]
+
+        public async Task<IActionResult> DeletePost(int postId)
+        {
+            return Ok(await Mediator.Send(new DeletePost.Command { PostID = postId }));
         }
 
 

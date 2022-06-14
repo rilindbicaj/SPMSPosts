@@ -29,12 +29,18 @@ namespace Persistence
                 entity.HasOne(post => post.AudienceGroup)
                                 .WithMany(audience => audience.Posts)
                             .HasForeignKey(post => post.Audience);
+
+                entity.Property(post => post.PostID)
+                        .ValueGeneratedOnAdd();
             });
 
             builder.Entity<PostAudienceGroup>(entity =>
             {
                 entity.HasMany(audience => audience.Posts)
                             .WithOne(post => post.AudienceGroup);
+
+                entity.Property(audience => audience.AudienceGroupID)
+                        .ValueGeneratedOnAdd();
             });
 
         }

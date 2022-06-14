@@ -1,4 +1,6 @@
 
+using System;
+using Application.Commands.Posts;
 using Application.Queries.Posts;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +29,7 @@ namespace API
 
             services.AddControllers();
             services.AddDbContext<PostsDbContext>(opt =>
-                  opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                  opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //opt.UseSqlServer(Configuration.GetConnectionString("SqlServerDemo")));
             services.AddSwaggerGen(c =>
             {
@@ -37,6 +39,10 @@ namespace API
             //MediatR configuration
             services.AddMediatR(typeof(GetAllPosts.Handler).Assembly);
             services.AddMediatR(typeof(GetPostsByAudience.Handler).Assembly);
+            services.AddMediatR(typeof(DeletePost.Handler).Assembly);
+            services.AddMediatR(typeof(CreatePost.Handler).Assembly);
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

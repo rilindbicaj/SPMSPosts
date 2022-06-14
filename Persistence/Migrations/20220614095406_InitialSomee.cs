@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class InitialSQLite : Migration
+    public partial class InitialSomee : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,12 +11,12 @@ namespace Persistence.Migrations
                 name: "AudienceGroups",
                 columns: table => new
                 {
-                    AudienceGroupID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AudienceGroupName = table.Column<string>(type: "TEXT", nullable: true),
-                    FacultyFilter = table.Column<int>(type: "INTEGER", nullable: false),
-                    GenerationFilter = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoleFilter = table.Column<int>(type: "INTEGER", nullable: false)
+                    AudienceGroupID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AudienceGroupName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FacultyFilter = table.Column<int>(type: "int", nullable: false),
+                    GenerationFilter = table.Column<int>(type: "int", nullable: false),
+                    RoleFilter = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,7 +27,7 @@ namespace Persistence.Migrations
                 name: "EmailSubscriptions",
                 columns: table => new
                 {
-                    User = table.Column<Guid>(type: "TEXT", nullable: false)
+                    User = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,12 +38,12 @@ namespace Persistence.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    PostID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Contents = table.Column<string>(type: "TEXT", nullable: true),
-                    Audience = table.Column<int>(type: "INTEGER", nullable: false)
+                    PostID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Contents = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Audience = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
