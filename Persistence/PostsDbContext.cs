@@ -12,7 +12,7 @@ namespace Persistence
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostAudienceGroup> AudienceGroups { get; set; }
 
-        public DbSet<EmailSubscription> EmailSubscriptions { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public PostsDbContext(DbContextOptions<PostsDbContext> opt) : base(opt)
         {
@@ -23,6 +23,11 @@ namespace Persistence
         {
 
             base.OnModelCreating(builder);
+
+            builder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Subscribed).HasDefaultValue(false);
+            });
 
             builder.Entity<Post>(entity =>
             {

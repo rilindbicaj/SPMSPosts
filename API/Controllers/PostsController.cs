@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Commands.Posts;
@@ -45,6 +46,18 @@ namespace API.Controllers
             return Ok(await Mediator.Send(new DeletePost.Command { PostID = postId }));
         }
 
+
+        [HttpGet("SubscribeToEmails/{userId}")]
+        public async Task<IActionResult> SubscribeToEmails(Guid userId)
+        {
+            return Ok(await Mediator.Send(new SubscribeToEmails.Command { UserId = userId }));
+        }
+
+        [HttpGet("GetUserSubscription/{userId}")]
+        public async Task<ActionResult<bool>> GetUserSubscription(Guid userId)
+        {
+            return Ok(await Mediator.Send(new GetIfUserIsSubscribedToEmails.Query { UserId = userId }));
+        }
 
     }
 }

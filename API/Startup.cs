@@ -42,6 +42,9 @@ namespace API
             services.AddMediatR(typeof(DeletePost.Handler).Assembly);
             services.AddMediatR(typeof(CreatePost.Handler).Assembly);
 
+            services.AddCors(conf => conf.AddPolicy("CorsPolicy",
+            opt => opt.AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins("http://localhost:3000")));
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -58,9 +61,13 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
+
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 

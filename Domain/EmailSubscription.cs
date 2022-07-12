@@ -3,9 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain
 {
-    public class EmailSubscription
+    public class User
     {
         [Key]
-        public Guid User { get; set; }
+        public Guid UserId { get; set; }
+        public string EmailAddress { get; set; }
+        public bool Subscribed { get; set; }
     }
 }

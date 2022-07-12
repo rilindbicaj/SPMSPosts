@@ -27,7 +27,7 @@ namespace Application.Queries.Posts
             public async Task<IEnumerable<Post>> Handle(Query request, CancellationToken token)
             {
 
-                return await _context.Posts.ToListAsync();
+                return await _context.Posts.Include(p => p.AudienceGroup).ToListAsync();
 
             }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -33,16 +34,24 @@ namespace Application.Queries.Posts
                 int facultyFilter = filters.Faculty == null ? -1 : (int)filters.Faculty;
                 int roleFilter = filters.Role == null ? -1 : (int)filters.Role;
                 int generationFilter = filters.Generation == null ? -1 : (int)filters.Generation;
+                
+                Console.WriteLine(facultyFilter + "/" + roleFilter + "/" + generationFilter);
 
                 var posts = _context.Posts.Include(post => post.AudienceGroup)
                     .Where(post =>
-                        ((post.AudienceGroup.FacultyFilter == facultyFilter) || (facultyFilter == -1)) &&
-                        ((post.AudienceGroup.RoleFilter == roleFilter) || (roleFilter == -1)) &&
-                        ((post.AudienceGroup.GenerationFilter == generationFilter) || (generationFilter == -1))
+                        ((post.AudienceGroup.FacultyFilter == facultyFilter) || (post.AudienceGroup.FacultyFilter == 0)) &&
+                        ((post.AudienceGroup.RoleFilter == roleFilter) || (post.AudienceGroup.RoleFilter == 0)) &&
+                        ((post.AudienceGroup.GenerationFilter == generationFilter) || (post.AudienceGroup.GenerationFilter == 0))
                         );
 
                 return await posts.ToListAsync();
 
+            }
+
+            private bool SelectionAlgorithm(int a, int b, int c, int x, int y, int z)
+            {
+                
+                return false;
             }
 
         }
